@@ -1,16 +1,20 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
-from django.utils.translation import gettext_lazy as _
+from .models import StudentProfile, InstructorProfile
 
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
+    user_type = serializers.ChoiceField(
+        choices=[('student', 'Student'), ('instructor', 'Instructor')],
+        write_only=True
+    )
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'password2']
+        fields = ['id', 'username', 'email', 'password', 'password2', 'user_type']
         extra_kwargs = {
             'password': {'write_only': True},
             'password2': {'write_only': True}
@@ -22,9 +26,27 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        user_type = validated_data.pop('user_type')
+        password = validated_data.pop('password')
         validated_data.pop('password2')
-        return User.objects.create_user(**validated_data)
-    
+        
+        user = User(**validated_data)
+        user.set_password(password)
+        
+        if user_type == 'student':
+            user.is_student = True
+        elif user_type == 'instructor':
+            user.is_instructor = True
+            
+        user.save()
+        
+        # Create profile based on user type
+        if user.is_student:
+            StudentProfile.objects.create(user=user)
+        elif user.is_instructor:
+            InstructorProfile.objects.create(user=user)
+            
+        return user
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()

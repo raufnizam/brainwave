@@ -15,7 +15,13 @@ class RegisterView(generics.CreateAPIView):
         refresh = RefreshToken.for_user(user)
         
         return Response({
-            'user': serializer.data,
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'is_student': user.is_student,
+                'is_instructor': user.is_instructor
+            },
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'message': 'Registration successful'
@@ -34,9 +40,11 @@ class LoginView(generics.GenericAPIView):
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
-            'user': {
+            'user': {   
                 'id': user.id,
                 'username': user.username,
-                'email': user.email
+                'email': user.email,
+                'is_student': user.is_student,
+                'is_instructor': user.is_instructor
             }
         })
