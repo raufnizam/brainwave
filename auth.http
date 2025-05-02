@@ -2,7 +2,7 @@ POST http://127.0.0.1:8000/auth/login/
 Content-Type: application/json
 
 {
-  "username": "john",
+  "username": "student2",
   "password": "admin@123"
 }
 
@@ -11,8 +11,14 @@ POST http://127.0.0.1:8000/auth/register/
 Content-Type: application/json
 
 {
-    "username": "test",
-    "email": "test@gmail.com",
+    "username": "student2",
+    "email": "stu@gmail.com",
     "password": "admin@123",
-    "password2": "admin@123"
+    "password2": "admin@123",
+    "user_type": "student"
 }
+
+###
+GET http://127.0.0.1:8000/auth/profile/update/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NTI1OTUyLCJpYXQiOjE3NDYxODAzNTIsImp0aSI6ImViYjZkMzVkYjNhZjQ1Nzk4NDMwN2FiOWQ4YzU5YmIyIiwidXNlcl9pZCI6OX0.U_B_To2yFJCxHzcIS2HGVr3q5rpvwhpLpG7m53K7b1s

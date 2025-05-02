@@ -1,8 +1,10 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserProfileSerializer, StudentProfileSerializer, InstructorProfileSerializer
+from .models import StudentProfile, InstructorProfile
+
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
@@ -48,3 +50,39 @@ class LoginView(generics.GenericAPIView):
                 'is_instructor': user.is_instructor
             }
         })
+        
+
+
+class UserProfileView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        return self.request.user
+
+class StudentProfileUpdateView(generics.UpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = StudentProfileSerializer
+
+    def get_object(self):
+        return self.request.user.student_profile
+
+class InstructorProfileUpdateView(generics.UpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = InstructorProfileSerializer
+
+    def get_object(self):
+        return self.request.user.instructor_profile
+        
+        
+        
+class UserProfileUpdateView(generics.RetrieveUpdateAPIView):  
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        return self.request.user      
+        
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+        

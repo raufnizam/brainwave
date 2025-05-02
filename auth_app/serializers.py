@@ -72,3 +72,41 @@ class LoginSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+    
+    
+
+
+class StudentProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentProfile
+        fields = ['enrollment_date']
+        read_only_fields = ['enrollment_date']
+
+class InstructorProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InstructorProfile
+        fields = ['specialization']
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    student_profile = StudentProfileSerializer(read_only=True)
+    instructor_profile = InstructorProfileSerializer(read_only=True)
+    
+    class Meta:
+        model = User
+        fields = [
+            'id', 
+            'username', 
+            'email', 
+            'first_name', 
+            'last_name',
+            'bio',
+            'profile_picture',
+            'is_student', 
+            'is_instructor',
+            'student_profile',
+            'instructor_profile'
+        ]
+        read_only_fields = ['id','username', 'is_student', 'is_instructor']
+ 
+    
+    
