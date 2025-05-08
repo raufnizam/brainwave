@@ -21,5 +21,4 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8000/auth/profile/update/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2OTg2MTk2LCJpYXQiOjE3NDY2NDA1OTYsImp0aSI6IjI3ZWE5NWE2ZGEwODQ0N2Y4MWNjNTA2ZGYzYzUyMzAwIiwidXNlcl9pZCI6OX0.sRc2NIV0N3T2s0BcpUdrYXMsY-I2iXvQCC_5H6kM6Zg
-
+Authorization: Bearer 
