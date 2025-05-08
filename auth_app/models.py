@@ -6,6 +6,15 @@ class User(AbstractUser):
     is_instructor = models.BooleanField(default=False)
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    
+    def typ_check(self):
+        if self.is_student:
+            return "Student"
+        elif self.is_instructor:
+            return "Instructor"
+    
+    def __str__(self):
+        return f"{self.username} - {self.typ_check()}"
 
 class StudentProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
